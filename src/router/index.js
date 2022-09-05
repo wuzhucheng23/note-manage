@@ -1,27 +1,48 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
+import commonRouter from '@/router/common'
+import clientRouter from '@/router/client'
+import serverRouter from '@/router/server'
+
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    {
+        path: '/',
+        redirect: '/common'
+    },
+    {
+        path: '/common',
+        fullPath: '/common',
+        name: 'common',
+        label: '公共路由',
+        component: () => import('@/views/common/common-view'),
+        redirect: '/common/login',
+        children: commonRouter
+    },
+    {
+        path: '/client',
+        fullPath: '/client',
+        name: 'client',
+        label: '客户端路由',
+        component: () => import('@/views/client/client-view'),
+        redirect: '/client/index',
+        children: clientRouter
+    },
+    {
+        path: '/server',
+        fullPath: '/server',
+        name: 'server',
+        label: '服务端路由',
+        component: () => import('@/views/server/server-view'),
+        redirect: '/server/person-info',
+        children: serverRouter
+    },
 ]
 
 const router = new VueRouter({
-  routes
+    routes
 })
 
 export default router
